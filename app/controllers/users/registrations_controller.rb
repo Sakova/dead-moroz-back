@@ -5,11 +5,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     jwt_payload = JWT.decode(request.headers["Authorization"].split(" ")[1], ENV["DEVISE_JWT_SECRET_KEY"]).first
     current_user = User.find(jwt_payload["sub"])
 
+    user_params[:items] = JSON.parse(user_params[:items]) if user_params[:items]
+
     if current_user.update(user_params)
       render json: {
         message: "Update successfully",
         user: current_user,
-        params: account_update_params
       }, status: :ok
     else
       render json: {
@@ -36,6 +37,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def user_params
-    params.permit(:name, :surname, :age, :avatar, :street, :house, :floor, :email)
+    @usr_params ||= params.permit(:name, :surname, :age, :avatar, :street, :house, :floor, :email, :items)
   end
 end

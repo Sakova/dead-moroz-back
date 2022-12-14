@@ -15,11 +15,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       Address.upsert(address_hash)
 
-      render json: {
-        message: "Update successfully",
-        user: current_user,
-        address: (current_user.address.present? ? current_user.address.reload : nil),
-      }, status: :ok
+      render json: @user.reload, status: :ok
     else
       render json: {
         message: "Update failed",

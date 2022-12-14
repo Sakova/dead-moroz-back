@@ -7,6 +7,7 @@ class Users::SessionsController < Devise::SessionsController
     render json: {
       message: "User signed in successfully",
       user: current_user,
+      address: current_user.address
     }, status: :ok
   end
 

@@ -8,11 +8,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     user_params[:items] = JSON.parse(user_params[:items]) if user_params[:items]
 
     if current_user.update(user_params)
-      Address.upsert({street: address_params[:street], house: address_params[:house], floor: address_params[:floor], user_id: current_user.id})
+      address_hash = { **address_params, user_id: current_user.id}
+      if current_user.address.present?
+        address_hash[:id] = current_user.address.id
+      end
+
+      Address.upsert(address_hash)
+
       render json: {
         message: "Update successfully",
         user: current_user,
-        address: current_user.address,
+        address: (current_user.address.present? ? current_user.address.reload : nil),
       }, status: :ok
     else
       render json: {

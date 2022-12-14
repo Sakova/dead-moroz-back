@@ -8,9 +8,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     user_params[:items] = JSON.parse(user_params[:items]) if user_params[:items]
 
     if current_user.update(user_params)
+      Address.upsert({street: address_params[:street], house: address_params[:house], floor: address_params[:floor], user_id: current_user.id})
       render json: {
         message: "Update successfully",
         user: current_user,
+        address: current_user.address,
       }, status: :ok
     else
       render json: {
@@ -37,6 +39,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def user_params
-    @usr_params ||= params.permit(:name, :surname, :age, :avatar, :street, :house, :floor, :email, :items)
+    @usr_params ||= params.permit(:name, :surname, :age, :avatar, :email, :items)
+  end
+
+  def address_params
+    @addr_params ||= params.permit(:street, :house, :floor)
   end
 end

@@ -3,7 +3,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.0"
 
-gem 'carrierwave'
 gem "devise"
 gem "devise-jwt"
 gem "dotenv-rails"

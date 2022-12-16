@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  mount_uploader :avatar, AvatarUploader
+
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_one :address
   # Include default devise modules. Others available are:

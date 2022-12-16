@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
+  has_one_attached :avatar
 
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_one :address
@@ -10,5 +13,9 @@ class User < ApplicationRecord
 
   def jwt_payload
     super
+  end
+
+  def get_image_url
+    url_for(self.avatar)
   end
 end

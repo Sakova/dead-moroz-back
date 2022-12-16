@@ -4,7 +4,6 @@ class MembersController < ApplicationController
   def index
     render json: {
       user: current_user,
-      address: current_user.address
     }, status: :ok
   end
 end

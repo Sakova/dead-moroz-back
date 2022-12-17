@@ -8,15 +8,15 @@ class Api::V1::AddressesController < ApplicationController
     end
 
     if Address.upsert(address_hash)
-      render json: current_user.address, status: :ok
+      render json: { message: "successfully change address" }, status: :ok
     else
-      render json: {message: "address update failed"}, status: :unprocessable_entity
+      render json: {message: "address change failed"}, status: :unprocessable_entity
     end
   end
 
   private
 
   def address_params
-    @addr_params ||= params.permit(:street, :house, :floor)
+    @addr_params ||= params.require(:address).permit(:street, :house, :floor)
   end
 end

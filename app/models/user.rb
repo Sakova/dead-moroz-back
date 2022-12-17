@@ -15,7 +15,8 @@ class User < ApplicationRecord
     super
   end
 
-  def get_image_url
-    url_for(self.avatar)
+  def get_avatar_url
+    options = {width: 500, crop: :fill}
+    Cloudinary::Utils.cloudinary_url(self.avatar.key, options)
   end
 end

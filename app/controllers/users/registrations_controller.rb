@@ -8,10 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     user_params[:items] = JSON.parse(user_params[:items]) if user_params[:items]
 
     if current_user.update(user_params)
-      render json: {
-        message: "Update successfully",
-        user: current_user,
-      }, status: :ok
+      render json: @user.reload, status: :ok
     else
       render json: {
         message: "Update failed",
@@ -24,10 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def respond_with(resource, _options = {})
     if resource.persisted?
-      render json: {
-        message: "Signed up successfully",
-        user: resource,
-      }, status: :ok
+      render json: @user, status: :ok
     else
       render json: {
         message: "user could not be signed up",

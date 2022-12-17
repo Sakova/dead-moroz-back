@@ -1,5 +1,8 @@
 class User < ApplicationRecord
-  mount_uploader :avatar, AvatarUploader
+  include Rails.application.routes.url_helpers
+
+  has_one_attached :avatar
+
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_one :address
   # Include default devise modules. Others available are:
@@ -10,5 +13,10 @@ class User < ApplicationRecord
 
   def jwt_payload
     super
+  end
+
+  def get_avatar_url
+    options = {width: 500, crop: :fill}
+    Cloudinary::Utils.cloudinary_url(self.avatar.key, options)
   end
 end

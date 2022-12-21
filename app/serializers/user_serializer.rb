@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :jti, :name, :surname, :email, :age, :items, :address, :avatar
+  attributes :id, :jti, :name, :surname, :role, :email, :age, :items, :address, :avatar
 
   def address
     address = self.object.address

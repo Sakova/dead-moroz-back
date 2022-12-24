@@ -2,6 +2,8 @@ class Gift < ApplicationRecord
   belongs_to :user
   has_one_attached :photo
 
+  paginates_per 10
+
   enum created_by: %i[child elf]
 
   def get_photo_url

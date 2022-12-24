@@ -1,10 +1,12 @@
 class Api::V1::GiftsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_gift, only: %i[update destroy]
 
   def index
-    gifts = current_user.gifts
+    gifts = current_user.gifts.order(:id).page params[:page]
     render json: gifts
   end
+
   def create
     gift = Gift.new(gift_params)
     gift.user_id = current_user.id
@@ -20,9 +22,34 @@ class Api::V1::GiftsController < ApplicationController
     end
   end
 
+  def update
+    if @gift.update(gift_params)
+      render json: @gift, status: :ok
+    else
+      render json: {
+        message: "Creation failed",
+        errors: @gift.errors.full_messages,
+      }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if current_user.gifts.include?(@gift) && @gift.delete
+      render json: {message: "successfully deleted"}, status: :ok
+    else
+      render json: {
+        errors: @gift.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
+  def set_gift
+    @gift = Gift.find(params[:id])
+  end
+
   def gift_params
-    @gft_params ||= params.permit(:description, :is_selected, :photo)
+    @gft_params ||= params.permit(:id, :description, :is_selected, :photo)
   end
 end

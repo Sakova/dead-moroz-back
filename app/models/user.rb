@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_one :address
+  has_many :gifts
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -14,6 +15,8 @@ class User < ApplicationRecord
   def jwt_payload
     super
   end
+
+  enum role: %i[user elf dead]
 
   def get_avatar_url
     options = {width: 500, crop: :fill}

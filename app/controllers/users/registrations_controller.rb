@@ -31,6 +31,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def user_params
-    @usr_params ||= params.permit(:name, :surname, :age, :avatar, :email, :items)
+    @usr_params ||= params.permit(:name, :surname, :age, :avatar, :email, :password, :items)
   end
 end

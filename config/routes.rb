@@ -10,8 +10,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :addresses, only: %i[create]
       resources :gifts, only: %i[index create update destroy] do
-        get 'page/:page', action: :index, on: :collection
+        get "page/:page", action: :index, on: :collection
       end
+      resources :assessments, only: %i[create update]
+      resources :feedbacks, only: %i[create update]
+      get "users/page/:page", to: "users#index"
     end
   end
 end

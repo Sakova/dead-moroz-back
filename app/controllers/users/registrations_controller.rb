@@ -1,6 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
-
   def update
     jwt_payload = JWT.decode(request.headers["Authorization"].split(" ")[1], ENV["DEVISE_JWT_SECRET_KEY"]).first
     current_user = User.find(jwt_payload["sub"])

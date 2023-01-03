@@ -9,7 +9,7 @@ class Api::V1::GiftsController < ApplicationController
 
   def create
     gift = Gift.new(gift_params)
-    gift.user_id = current_user.id
+    gift.user_id = gift_params[:user_id] ? gift_params[:user_id] : current_user.id
     gift.created_by = current_user.user? ? 0 : 1
 
     if gift.save
@@ -34,7 +34,7 @@ class Api::V1::GiftsController < ApplicationController
   end
 
   def destroy
-    if current_user.gifts.include?(@gift) && @gift.delete
+    if (current_user.gifts.include?(@gift) || current_user.elf?) && @gift.delete
       render json: {message: "successfully deleted"}, status: :ok
     else
       render json: {
@@ -50,6 +50,6 @@ class Api::V1::GiftsController < ApplicationController
   end
 
   def gift_params
-    @gft_params ||= params.permit(:id, :description, :is_selected, :photo)
+    @gft_params ||= params.permit(:id, :description, :is_selected, :photo, :user_id)
   end
 end

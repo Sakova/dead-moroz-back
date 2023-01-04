@@ -6,4 +6,18 @@ class Api::V1::UsersController < ApplicationController
     users = User.all.order(:id).page params[:page]
     render json: users, status: :ok
   end
+
+  def translate
+    result = Rails.cache.fetch("user/#{params[:user]}", expires_in: 1.day) do
+      user = User.find(params[:user])
+      gifts = user.gifts.map{|gift| gift.description}
+
+      translated_gifts = ProfileTranslate.translate(gifts)
+      translated_items = ProfileTranslate.translate(user.items)
+
+      {items: translated_items, gifts: translated_gifts}
+    end
+
+    render json: result, status: :ok
+  end
 end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :assessments, only: %i[create update]
       resources :feedbacks, only: %i[create update]
       get "users/page/:page", to: "users#index"
+      get "users/:user", to: "users#translate"
     end
   end
 end

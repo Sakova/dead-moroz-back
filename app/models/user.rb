@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  paginates_per 10
+  paginates_per USERS_PER_PAGE
 
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_one :address

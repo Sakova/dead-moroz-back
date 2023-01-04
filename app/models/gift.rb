@@ -2,7 +2,7 @@ class Gift < ApplicationRecord
   belongs_to :user
   has_one_attached :photo
 
-  paginates_per 10
+  paginates_per GIFTS_PER_PAGE
 
   enum created_by: %i[child elf]
 

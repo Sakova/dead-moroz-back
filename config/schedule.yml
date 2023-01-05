@@ -1,0 +1,4 @@
+elf_alert_job:
+  cron: "30 6 * * 1-6"
+  class: "ElfAlertJob"
+  queue: default

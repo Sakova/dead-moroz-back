@@ -1,10 +1,10 @@
 class Api::V1::FeedbacksController < ApplicationController
   before_action :authenticate_user!
-  before_action :allow_access?
   before_action :set_feedback, only: %i[update]
 
   def create
     feedback = Feedback.new(feedback_params)
+    authorize feedback
     feedback.created_by = current_user.id
 
     if feedback.save
@@ -18,6 +18,7 @@ class Api::V1::FeedbacksController < ApplicationController
   end
 
   def update
+    authorize @feedback
     if @feedback.update(feedback_params)
       render json: @feedback, status: :ok
     else

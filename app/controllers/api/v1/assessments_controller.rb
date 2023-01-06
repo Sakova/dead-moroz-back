@@ -1,10 +1,10 @@
 class Api::V1::AssessmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :allow_access?
   before_action :set_assessment, only: %i[update]
 
   def create
     assessment = Assessment.new(assessment_params)
+    authorize assessment
     assessment.created_by = current_user.id
 
     if assessment.save
@@ -18,6 +18,7 @@ class Api::V1::AssessmentsController < ApplicationController
   end
 
   def update
+    authorize @assessment
     if @assessment.update(assessment_params)
       render json: @assessment, status: :ok
     else

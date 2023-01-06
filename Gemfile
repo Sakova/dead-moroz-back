@@ -9,6 +9,7 @@ gem "devise"
 gem "devise-jwt"
 gem "dotenv-rails"
 gem "kaminari"
+gem 'pundit'
 gem "rails", "~> 7.0.4"
 gem "sidekiq"
 gem 'sidekiq-cron'
